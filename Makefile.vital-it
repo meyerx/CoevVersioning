@@ -1,0 +1,24 @@
+#
+# Makefile: Makefile for the coev program.
+#
+# Linda Dib & Wim Hordijk   Last modified: 26 April 2013
+#
+# Modifications by HS for RPM package and Vital-IT environment (Oct 2014)
+# 
+# Default pathes for Vital-IT environment
+PREFIX=/software
+LIBDIR=${PREFIX}/lib
+LIB64DIR=${PREFIX}/lib64
+NLOPT_INCDIR=${PREFIX}/Utility/nlopt/2.3/include
+NLOPT_LIBDIR=${PREFIX}/Utility/nlopt/2.3/lib
+
+coev: coev.c model.c  ml.c bayes.c  simulate.c tree.c strmap.c def.h model.h strmap.h tree.h
+	gcc -g -o coev coev.c model.c ml.c bayes.c simulate.c strmap.c tree.c -lm -llapack -lblas -lnlopt -lpthread -g -ggdb -O0  -I ${NLOPT_INCDIR} -L ${NLOPT_LIBDIR} -L ${LIBDIR} -L ${LIB64DIR} -lgsl -lgslcblas -Wl,-rpath=${NLOPT_LIBDIR}
+
+test:
+	./coev -data nt -method sm -tree example/tree.txt -out example/simulate.out -s 1 -d 10 -r1 5 -r2 5
+	rm example/simulate.out
+
+clean:
+	rm -f *~ *.o
+	rm coev

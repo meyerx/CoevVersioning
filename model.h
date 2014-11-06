@@ -18,4 +18,7 @@ void   setQ             (double **Qmatrix, double s, double d, double w1,
 			 double w2, int *VectCoevComb );
 void   setQNull         (double **Qmatrix, double w1, double w2);
 
+void   setQnupletSimulator(double **Qmatrix, double s, double d, double *w,int *VectCoevComb,double *freqVector);
+void   pVectorFunction (double *pVector, double **Qmatrix, double **QTmatrix, double ti, double *MatrixA, double *MatrixB, double *MatrixC);
+
 #endif  /* _MODEL_H_ */

@@ -10,53 +10,6 @@
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%% COMBINATION FUNCTION %%%%%%%%%%%%%%%%%%%%%%%
-int isConflict (int index1, int index2)
-{
-  int  conflict;
-  char c10, c11, c20, c21;
-
-  /*
-  ** Get the combinations.
-  */
-  if (dataType == NT)
-  {
-    c10 = ntComb[index1][0];
-    c11 = ntComb[index1][1];
-    c20 = ntComb[index2][0];
-    c21 = ntComb[index2][1];
-  }
-  else
-  {
-    c10 = aaComb[index1][0];
-    c11 = aaComb[index1][1];
-    c20 = aaComb[index2][0];
-    c21 = aaComb[index2][1];
-  }
-  
-  /*
-  ** Compare the combinations.
-  */
-  if ((c10 == c20) && (c11 == c21))
-  {
-    // identical
-    conflict = 0;
-  }
-  else if ((c10 == c20) || (c11 == c21))
-  {
-    // conflict in one position
-    conflict = 1;
-  }
-  else
-  {
-    // no conflict
-    conflict = -1;
-  }
-
-  /*
-  ** Return the result.
-  */
-  return (conflict);
-} 
 
 
 void addComb (int *array)
@@ -488,7 +441,9 @@ int bayes (){
 	/*
 	 ** Create the nucleotide combinations.
 	 */
-	
+	  fp = fopen(outFile, "w+");
+        fprintf (fp,"iteration\tPosterior\tLogLikelihood\tPrior\tS\tD\tR1\tR2\tAA\tAC\tAG\tAT\tCA\tCC\tCG\tCT\tGA\tGC\tGG\tGT\tTA\tTC\tTG\tTT\n");
+	 fflush(fp);
 	/******* FOR 4 CHAINS***********/
 	//////THREAD1
 	th1S   = s; th1D   = d; th1W1  = r1; th1W2  = r2;
@@ -528,8 +483,7 @@ int bayes (){
 	int *tmpVectorComb = (int *)malloc (nrComb*sizeof (int));
 	for (loop_i = 0; loop_i < nrComb; loop_i++){ 	tmpVectorComb[loop_i] = 0;}
 	
-        fp = fopen(outFile, "w+");
-        fprintf (fp,"iteration\tPosterior\tLogLikelihood\tPrior\tS\tD\tR1\tR2\tAA\tAC\tAG\tAT\tCA\tCC\tCG\tCT\tGA\tGC\tGG\tGT\tTA\tTC\tTG\tTT\n");
+       
 	
 	/****************************************************************/
 	/*                            MULTITHREADING                    */
@@ -541,7 +495,7 @@ int bayes (){
 	double* argThread4= (double*)malloc((9+nrComb)*sizeof(double));
 	pthread_t pth1, pth2, pth3, pth4;
 	
-	
+	//printf("DEBUG: Thread initialized\n");
 	while(iteration<IT){
 		///THREAD1
 		argThread1[0]=temperature1; //temperature
@@ -596,13 +550,14 @@ int bayes (){
 		for (loop_i = 9; loop_i < nrComb+9; loop_i++){ argThread4[loop_i] =  th4VectorComb[loop_i-9];}
 		pthread_create(&pth4,NULL,threadFunc,argThread4);
 		
-		
+		//printf("DEBUG: Thread created\n");
 		///WAITING FOR DIFFERENT THREADS
 		pthread_join(pth1, NULL /* void ** return value could go here */);
 		pthread_join(pth2, NULL /* void ** return value could go here */);
                 pthread_join(pth3, NULL /* void ** return value could go here */);
                 pthread_join(pth4, NULL /* void ** return value could go here */);
                 
+                //printf("DEBUG: Waiting for Thread \n");
                 //GET VALUES THREAD1
 		th1S=argThread1[2];th1D=argThread1[3];th1W1=argThread1[4];th1W2=argThread1[5];
 		double th1Likelihood=argThread1[6];
@@ -631,7 +586,7 @@ int bayes (){
 		double th4Prior=argThread4[8];
 		for (loop_i = 9; loop_i < nrComb+9; loop_i++){ th4VectorComb[loop_i-9]=(int)argThread4[loop_i];}
 
-		
+		 //printf("DEBUG:Got values of Threads \n");
 		/*********************************SWAPPING CHAINS******************************/
 		///////////////////////////////////////////////////////////////////////////////
 		//Condition of acceptance
@@ -651,8 +606,9 @@ int bayes (){
 		// printf("\nOP_RANDOM %d\n",op);
 		switch(op){
 		case 0:
+		            //printf("\Here 0: %f\n",equationValue1);
 		        if ( equationValue1 >= log(x)){
-                        //printf("\nSWAP 1\n");
+                                    //printf("\nSWAP 0\n");
 			tmpS   = th1S;tmpD   = th1D;tmpW1   = th1W1;tmpW2   = th1W2;
 			tmpLikelihood   = th1Likelihood;tmpLogLikelihood= th1LogLikelihood;tmpPrior= th1Prior;
 			for (loop_j=0;loop_j<nrComb;loop_j++){tmpVectorComb[loop_j]=th1VectorComb[loop_j];}
@@ -665,14 +621,15 @@ int bayes (){
 			th2S   = tmpS;th2D   = tmpD;th2W1   =tmpW1;th2W2   = tmpW2;
 			th2Likelihood   = tmpLikelihood;th2LogLikelihood= tmpLogLikelihood;th2Prior= tmpPrior;
 			for (loop_j=0;loop_j<nrComb;loop_j++){th2VectorComb[loop_j]=tmpVectorComb[loop_j];}
-			
+			//  printf("\nEND SWAP 0\n");
                         }else{
                                         
                         }
                         break;
 		case 1:
+		            //printf("\Here 1: %f\n",equationValue2);
 		        if ( equationValue2 >= log(x)){
-                        //printf("\nSWAP 2\n");
+                                   //printf("\nSWAP 1\n");
 			tmpS   = th1S;tmpD   = th1D;tmpW1   = th1W1;tmpW2   = th1W2;
 			tmpLikelihood   = th1Likelihood;tmpLogLikelihood= th1LogLikelihood;tmpPrior= th1Prior;
 			for (loop_j=0;loop_j<nrComb;loop_j++){ tmpVectorComb[loop_j]=th1VectorComb[loop_j];}
@@ -684,6 +641,7 @@ int bayes (){
 			th3S   = tmpS;th3D   = tmpD;th3W1   =tmpW1;th3W2   = tmpW2;
 			th3Likelihood   = tmpLikelihood;th3LogLikelihood= tmpLogLikelihood;th3Prior= tmpPrior;
 			for (loop_j=0;loop_j<nrComb;loop_j++){ th3VectorComb[loop_j]=tmpVectorComb[loop_j];}
+			//  printf("\nEND SWAP 1\n");
 			
                         }else{
                          //printf("\nKEEP ON\n");
@@ -691,8 +649,9 @@ int bayes (){
 		        break;
 		
 		case 2:
+		            //printf("\Here 2: %f\n",equationValue3);
 		        if ( equationValue3 >= log(x)){
-                       // printf("\nSWAP 3\n");
+                                    //printf("\nSWAP 2\n");
 			tmpS   = th1S;tmpD   = th1D;tmpW1   = th1W1;tmpW2   = th1W2;
 			tmpLikelihood   = th1Likelihood;tmpLogLikelihood= th1LogLikelihood;tmpPrior= th1Prior;
 			for (loop_j=0;loop_j<nrComb;loop_j++){ tmpVectorComb[loop_j]=th1VectorComb[loop_j];}
@@ -704,19 +663,15 @@ int bayes (){
 			th4S   = tmpS;th4D   = tmpD;th4W1   =tmpW1;th4W2   = tmpW2;
 			th4Likelihood   = tmpLikelihood;th4LogLikelihood= tmpLogLikelihood;th4Prior= tmpPrior;
 			for (loop_j=0;loop_j<nrComb;loop_j++){ th4VectorComb[loop_j]=tmpVectorComb[loop_j];}
+			 // printf("\nEND SWAP 2\n");
 			
                         }else{
                          //printf("\nKEEP ON\n");
                         }
 		        break;          	
 		}
-		
 		double post=th1LogLikelihood+th1Prior;
-                if (iteration % print_freq ==0){
-                        printf ("%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t", iteration,post, th1LogLikelihood, th1Prior,th1S,th1D,th1W1,th1W2);
-                        for (loop_j=0;loop_j<nrComb;loop_j++){	printf ("%d\t",th1VectorComb[loop_j]);}
-                        printf ("\n");
-                }
+              
         
                 if ((iteration % sample_freq ==0) & (iteration >= burnin)){
                         fprintf (fp,"%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t", iteration,post,th1LogLikelihood, th1Prior, th1S, th1D, th1W1,th1W2);

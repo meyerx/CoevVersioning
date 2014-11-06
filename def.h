@@ -28,6 +28,7 @@
 
 #define BAYES       1
 #define ML          2
+#define SM          3
 
 #define NT          1
 #define AA          2
@@ -36,32 +37,23 @@
 #define HKY         2
 #define GTR         3
 
-struct node{
-  char         data[8], label[128];
-  double       dist, *probVector;
-  struct node *parent, *left, *right;
-};
-
-struct sequence
-{
-  char            *label, *sequence;
-  struct sequence *next;
-};
-
+#define MAX_LINE_LEN 10000
 extern int          IT, sample_freq, print_freq, burnin, nrComb, dataType,
                    *obsCombs, **profiles, nrProfiles, maxNrProfiles,
-                    innerLoopIteration, model;
+                    innerLoopIteration, model, nuplet,col1,col2, nrSimulations;
 extern double       s, d, alpha, beta; 
 extern double       r1, r2;  
-extern char         outFile[1024], *ntComb[nrNtComb], *aaComb[nrAaComb];
+
+extern char        treeFile[100000], alignFile[100000], outFile[100000], *aaComb[nrAaComb],*ntComb[nrNtComb], tree[10*MAX_LINE_LEN];
 extern struct node  root;
-
-
+extern int nrSimulations;
+extern struct sequence seqList;
+extern const char nucleotide[nrNt];
 /*
 ** Function prototypes.
 */
 int isConflict (int index1, int index2);
 int bayes      ();
 int ml         ();
-
+int simulate   ();
 #endif  /* _DEF_H_ */
