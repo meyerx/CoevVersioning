@@ -1,7 +1,7 @@
 /*
  ** model.h: Header file for the model.c functions.
  **
- ** Linda Dib    Last modified: 22 July 2014
+** Linda Dib & Wim Hordijk   Last modified: 11 december 2014
  */
 #include "tree.h"
 #include "def.h"

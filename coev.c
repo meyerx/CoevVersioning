@@ -1,7 +1,7 @@
 /*
 ** coev.c: Program for site coevolution analysis.
 **
-** Linda Dib & Wim Hordijk   Last modified: 30 April 2013
+** Linda Dib & Wim Hordijk   Last modified: 11 december 2014
 */
 
 #include "def.h"

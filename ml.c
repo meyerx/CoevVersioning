@@ -1,7 +1,7 @@
 /*
 ** ml.c: Apply the maximum likelihood method.
 **
-** Linda Dib & Wim Hordijk   Last modified: 26 April 2013
+** Linda Dib & Wim Hordijk   Last modified: 11 december 2014
 */
 
 #include "def.h"

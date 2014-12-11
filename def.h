@@ -1,7 +1,7 @@
 /*
 ** def.h: Header file with global variables for the coev program.
 **
-** Linda Dib & Wim Hordijk   Last modified: 30 April 2013
+** Linda Dib & Wim Hordijk   Last modified: 11 december 2014
 */
 
 #ifndef _DEF_H_
