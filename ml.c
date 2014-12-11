@@ -155,19 +155,20 @@ int ml ()
 
   int AComb= 0;
   int *AVectorComb= (int *)malloc(nrComb*sizeof(int));
-  //printf("nrProfiles: %d\n",nrProfiles);
+  printf("nrProfiles: %d\n",nrProfiles);
   while(AComb<nrProfiles){
+  
     start = time(NULL);
     for (loop_j=0;loop_j<nrComb;loop_j++){ 
       AVectorComb[loop_j]=profiles[AComb][loop_j];
       fprintf(fp,"%d", profiles[AComb][loop_j]);
-      //printf("%d", profiles[AComb][loop_j]);
+      printf("%d", profiles[AComb][loop_j]);
     }
     fprintf(fp,"\t");
-    //printf("\n");
+    printf("\n");
     //OPT NULL ////////////////////////////////////////////////////
     
-    
+    if(opt==1){
     double lb_null[2] = {1e-9, 01e-9}; // lower bounds 
     double ub_null[2] = {100, 100}; // upper bounds 
     nlopt_opt opt_null;
@@ -221,6 +222,34 @@ int ml ()
     nlopt_destroy(opt);
     end = time(NULL);
      //printf("The profile used %f seconds.\n", difftime(end, start));
+  
+    }else{
+  
+            double *AS    = (double *)malloc(sizeof(double));
+            double *AD    = (double *)malloc(sizeof(double));
+            double *AR1    = (double *)malloc(sizeof(double));
+            double *AR2    = (double *)malloc(sizeof(double));
+         
+            *AS=s;
+            *AD=d;
+            *AR1=r1;
+            *AR2=r2;
+           
+            
+            //call function: Likelihood
+            double ALogLikelihood=0.0, ALogLikelihoodNull=0.0;
+            ALogLikelihoodNull= logLikelihoodNull(AR1, AR2);   
+            ALogLikelihood= logLikelihood(AVectorComb, AS, AD, AR1,AR2); 
+            
+            printf( "The ALogLikelihoodNull: %g.\nThe ALogLikelihood: %g.\n\n",ALogLikelihoodNull, ALogLikelihood);
+            
+           
+            free(AS);
+            free(AD);
+            free(AR1);
+            free(AR2);
+            
+  }
     AComb++;
   }
   fprintf(fp,"\n");

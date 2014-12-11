@@ -40,7 +40,7 @@
 #define MAX_LINE_LEN 10000
 extern int          IT, sample_freq, print_freq, burnin, nrComb, dataType,
                    *obsCombs, **profiles, nrProfiles, maxNrProfiles,
-                    innerLoopIteration, model, nuplet,col1,col2, nrSimulations;
+                    innerLoopIteration, model, nuplet,col1,col2, nrSimulations,opt;
 extern double       s, d, alpha, beta; 
 extern double       r1, r2;  
 

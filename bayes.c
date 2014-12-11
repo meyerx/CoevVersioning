@@ -316,7 +316,7 @@ void *threadFunc(void *arg){
 		
 		setQ(Q,*BS,*BD,*BW1,*BW2,BVectorComb);
 		
-		Qtransposed[nrComb][nrComb];
+		
 		transposeMatrix(Q,Qtransposed);
 		for (loop_j=0;loop_j<nrComb;loop_j++){ a[loop_j]=0.0;}
 		for (loop_j=0;loop_j<nrComb;loop_j++){ 

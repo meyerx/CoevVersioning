@@ -15,7 +15,7 @@ const char aminoacid[nrAa] = {'A','R','N','D','C','E','Q','G','H','I','L','K','M
 
 int     IT, sample_freq, print_freq, burnin, col1, col2, method, dataType,
         nrComb, *obsCombs, **profiles, nrProfiles, maxNrProfiles,
-        innerLoopIteration, model, nrSimulations;
+        innerLoopIteration, model, nrSimulations, opt;
 double  s, d, alpha, beta;
 double  r1, r2; 
 
@@ -260,7 +260,7 @@ int getArguments (int argc, char **argv)
   model = JC;
   nrComb = nrNtComb;
   nrSimulations=1;
-
+  opt=1;
   /*
   ** Get and check the arguments.
   */
@@ -424,6 +424,11 @@ int getArguments (int argc, char **argv)
                 fprintf (stderr, "Invalid value for argument 'ns'. It should be between 0 and 5000.\n");
                 goto End_of_Routine;
             }
+            i++;
+        } 
+         else if (strcmp (argv[i], "-opt") == 0)
+        {
+            opt = atoi (argv[++i]);
             i++;
         }   
     else if (strcmp (argv[i], "-cols") == 0)
