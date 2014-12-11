@@ -1,7 +1,7 @@
 /*
 ** model.h: Header file for the model.c functions.
 **
-** Linda Dib & Wim Hordijk    Last modified: 30 April 2013
+** Linda Dib & Wim Hordijk   Last modified: 11 december 2014
 */
 
 #ifndef _MODEL_H_
