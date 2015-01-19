@@ -16,7 +16,7 @@ CXX		= g++
 CXXFLAGS	= -ansi -O3
 CC		= gcc
 CCFLAGS		= -O3
-OBJS		= coev.o GTR_CPP.o ModelCPP.o model.o gtr.o tree.o bayes.o strmap.o
+OBJS		= ModelCPP.o bayes.o coev.o ml.o model.o simulate.o strmap.o tree.o
 coev : $(OBJS)
 	$(CXX) -stdlib=libstdc++  ${NLOPT_LIBDIR} ${LIBDIR} ${LIB64DIR} $(LIB) -o $@ $(OBJS)
 .o : %.cpp
