@@ -491,6 +491,9 @@ int main (int argc, char **argv)
   int  status, i, j, num_chars, assign, len;
   char tree[10*MAX_LINE_LEN], dat[3];
   
+  srandom(time(NULL)); // FIXME
+  srand ( time(NULL) ); // FIXME
+
   /*
   ** Get the arguments.
   */
@@ -551,14 +554,13 @@ int main (int argc, char **argv)
     for (assign=0;assign<nrComb;assign++){
         root.probVector[assign] = 0.0;
     }
-    srandom(time(NULL));
-    srand ( time(NULL) );
-    
+
       // START//////////////////////
     if (method == BAYES || method == ML){
        printf(  "DEBUG : ReadAlignmentFile\n");
-        num_chars =readAlignmentFile();
-        if(num_chars <0){
+        int res =readAlignmentFile(); // FIXME BUG!
+        //printf("%d\n", num_chars);
+        if(res <0){
             goto End_of_Routine;
         }
         

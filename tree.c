@@ -59,7 +59,7 @@ int getComb (char *comb){
 }
 
 int readAlignmentFile(){ char             line[MAX_LINE_LEN];
-    int              num_chars, len;
+    int              num_chars=0, len;
     struct sequence *seq, *last;
     FILE            *fp;
     /*

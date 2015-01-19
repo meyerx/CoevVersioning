@@ -16,6 +16,9 @@
 #include <time.h>
 #include <pthread.h>
 #include <sys/time.h>
+
+#include "wrapperCPP.h"
+
 /*
 ** Global variables.
 */
@@ -49,6 +52,7 @@ extern struct node  root;
 extern int nrSimulations;
 extern struct sequence seqList;
 extern const char nucleotide[nrNt];
+
 /*
 ** Function prototypes.
 */

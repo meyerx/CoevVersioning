@@ -6,13 +6,14 @@
 
 #include "def.h"
 #include "model.h"
+#include "wrapperCPP.h"
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%% ML FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%
 
 
 double logLikelihood(int *VectCoevComb, double* AS, double* AD, double* AW1, double* AW2){
-  double *a, **Qtransposed, **Q;
+  double *a, **Q;
   int     loop_j=0, i;
   double  ALikelihood    = 0.0;
   
@@ -21,41 +22,51 @@ double logLikelihood(int *VectCoevComb, double* AS, double* AD, double* AW1, dou
   */
   a = (double *)malloc (nrComb * sizeof (double));
   Q = (double **)malloc (nrComb * sizeof (double *));
-  Qtransposed = (double **)malloc (nrComb * sizeof (double *));
+  //Qtransposed = (double **)malloc (nrComb * sizeof (double *));
   for (i = 0; i < nrComb; i++)
   {
     Q[i] = (double *)malloc (nrComb * sizeof (double));
-    Qtransposed[i] = (double *)malloc (nrComb * sizeof (double));
+    //Qtransposed[i] = (double *)malloc (nrComb * sizeof (double));
   }
+
   setQ(Q,*AS,*AD,*AW1,*AW2,VectCoevComb);
-  
-  transposeMatrix(Q,Qtransposed);
-  double *MatrixA=(double *)malloc(nrComb*nrComb*sizeof(double));//INPUT
-  double *MatrixB=(double *)malloc(nrComb*nrComb*sizeof(double));//INPUT
-  double *MatrixC=(double *)malloc(nrComb*nrComb*sizeof(double));//OUTPUT
-  for (loop_j=0;loop_j<nrComb;loop_j++){ a[loop_j]=0;}
-  executeCond(Q, Qtransposed, &root, a, MatrixA, MatrixB, MatrixC);
+
+  model_cpp *modelCPP = new_Model_CPP(nrComb);
+  Model_CPP_setQ(modelCPP,Q);
+  Model_CPP_executeCond(modelCPP, &root, a);
   ALikelihood=0.0;
-  for (loop_j=0;loop_j<nrComb;loop_j++){ 
+  for (loop_j=0;loop_j<nrComb;loop_j++){
     ALikelihood=ALikelihood+a[loop_j];
   }
+  delete_Model_CPP(modelCPP);
+  
+  //transposeMatrix(Q,Qtransposed);
+  //double *MatrixA=(double *)malloc(nrComb*nrComb*sizeof(double));//INPUT
+  //double *MatrixB=(double *)malloc(nrComb*nrComb*sizeof(double));//INPUT
+  //double *MatrixC=(double *)malloc(nrComb*nrComb*sizeof(double));//OUTPUT
+  //for (loop_j=0;loop_j<nrComb;loop_j++){ a[loop_j]=0;}
+  //executeCond(Q, Qtransposed, &root, a, MatrixA, MatrixB, MatrixC);
+  //ALikelihood=0.0;
+  //for (loop_j=0;loop_j<nrComb;loop_j++){
+  //  ALikelihood=ALikelihood+a[loop_j];
+  // }
  
-  free(MatrixA);
-  free(MatrixB);
-  free(MatrixC);
+  //free(MatrixA);
+  //free(MatrixB);
+  //free(MatrixC);
   free (a);
   for (i = 0; i < nrComb; i++)
   {
     free (Q[i]);
-    free (Qtransposed[i]);
+    //free (Qtransposed[i]);
   }
   free (Q);
-  free (Qtransposed);  
+  //free (Qtransposed);
   return log(ALikelihood);
 }
 
 double logLikelihoodNull(double* AW1, double* AW2){
-  double *a, **Qtransposed, **Q;
+  double *a, **Q;
   int     loop_j=0, i;
   double  ALikelihood    = 0.0;
 
@@ -64,15 +75,27 @@ double logLikelihoodNull(double* AW1, double* AW2){
   */
   a = (double *)malloc (nrComb * sizeof (double));
   Q = (double **)malloc (nrComb * sizeof (double *));
-  Qtransposed = (double **)malloc (nrComb * sizeof (double *));
+  //Qtransposed = (double **)malloc (nrComb * sizeof (double *));
   for (i = 0; i < nrComb; i++)
   {
     Q[i] = (double *)malloc (nrComb * sizeof (double));
-    Qtransposed[i] = (double *)malloc (nrComb * sizeof (double));
+    //Qtransposed[i] = (double *)malloc (nrComb * sizeof (double));
   }
+
   setQNull(Q,*AW1,*AW2);
 
-  transposeMatrix(Q,Qtransposed);
+  model_cpp *modelCPP = new_Model_CPP(nrComb);
+  Model_CPP_setQ(modelCPP,Q);
+  Model_CPP_executeCond(modelCPP, &root, a);
+  ALikelihood=0.0;
+  for (loop_j=0;loop_j<nrComb;loop_j++){
+    ALikelihood=ALikelihood+a[loop_j];
+  }
+  delete_Model_CPP(modelCPP);
+
+
+
+  /* transposeMatrix(Q,Qtransposed);
   double *MatrixA=(double *)malloc(nrComb*nrComb*sizeof(double));//INPUT
   double *MatrixB=(double *)malloc(nrComb*nrComb*sizeof(double));//INPUT
   double *MatrixC=(double *)malloc(nrComb*nrComb*sizeof(double));//OUTPUT
@@ -85,15 +108,15 @@ double logLikelihoodNull(double* AW1, double* AW2){
  
   free(MatrixA);
   free(MatrixB);
-  free(MatrixC);
+  free(MatrixC);*/
   free (a);
   for (i = 0; i < nrComb; i++)
   {
     free (Q[i]);
-    free (Qtransposed[i]);
+    //free (Qtransposed[i]);
   }
   free (Q);
-  free (Qtransposed);
+  //free (Qtransposed);
   
   return log(ALikelihood);
 }
