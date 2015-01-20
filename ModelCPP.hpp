@@ -11,9 +11,9 @@
 #include "tree.h"
 
 #include <iostream>
-#include "Eigen/Core"
-#include "Eigen/Dense"
-#include "Eigen/Eigenvalues"
+#include <Core>
+#include <Dense>
+#include <Eigenvalues>
 
 #include "wrapperCPP.h"
 
