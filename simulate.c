@@ -327,9 +327,9 @@ int simulate ()
     //fprintf(stderr,"DEBUG : Freq vector: ");
     int index=0;
     while (index<nrComb){
-        freqVector[index]=(double) (1.0/(nrComb+(1000*sum)));
+        freqVector[index]=(double) (1.0/(nrComb+(10*sum)));
         if (VectCoevComb[index]==1){
-            freqVector[index]=freqVector[index]+(double) (1.0*1000/(nrComb+1000*sum));
+            freqVector[index]=freqVector[index]+(double) (1.0*10/(nrComb+10*sum));
         }
         //fprintf(stderr,"%f ",freqVector[index]);
         index++;
