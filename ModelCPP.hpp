@@ -52,4 +52,5 @@ void Model_CPP_setQ(model_cpp* model, double **Qm) {
 	real(model)->setQ(Qm);
 }
 
+
 #endif /* MODELCPP_H_ */

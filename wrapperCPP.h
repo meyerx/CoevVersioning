@@ -23,6 +23,7 @@ model_cpp* new_Model_CPP(const uint aNRComb);
 void delete_Model_CPP(model_cpp* model);
 double Model_CPP_executeCond(model_cpp* model, struct node* n, double *vec);
 void Model_CPP_setQ(model_cpp* model, double **Qm);
+void Model_CPP_setQNull(model_cpp* model, double **Qm);
 
 #ifdef __cplusplus
 }

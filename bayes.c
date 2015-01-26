@@ -181,12 +181,12 @@ void *threadFunc(void *arg) {
 	}
 
 	/*double **Qtransposed = (double **) malloc(nrComb * sizeof(double *));
-	for (loop_i = 0; loop_i < nrComb; loop_i++) {
-		Qtransposed[loop_i] = (double *) malloc(nrComb * sizeof(double));
-		for (loop_j = 0; loop_j < nrComb; loop_j++) {
-			Qtransposed[loop_i][loop_j] = 0;
-		}
-	}*/
+	 for (loop_i = 0; loop_i < nrComb; loop_i++) {
+	 Qtransposed[loop_i] = (double *) malloc(nrComb * sizeof(double));
+	 for (loop_j = 0; loop_j < nrComb; loop_j++) {
+	 Qtransposed[loop_i][loop_j] = 0;
+	 }
+	 }*/
 
 	double * func_data = (double*) arg;
 	double temperature = func_data[0];
@@ -220,10 +220,10 @@ void *threadFunc(void *arg) {
 	setQ(Q, *AS, *AD, *AW1, *AW2, AVectorComb);
 
 	/*for (loop_j = 0; loop_j < nrComb; loop_j++) {
-		printf("%0.4f  ", Q[0][loop_j]);
-	}
-	printf("\n");
-	getchar();*/
+	 printf("%0.4f  ", Q[0][loop_j]);
+	 }
+	 printf("\n");
+	 getchar();*/
 
 	/*transposeMatrix(Q,Qtransposed);
 
@@ -240,8 +240,6 @@ void *threadFunc(void *arg) {
 	 }
 	 ALogLikelihood =log(ALikelihood);*/
 
-
-
 	model_cpp *modelCPP = new_Model_CPP(nrComb);
 	Model_CPP_setQ(modelCPP, Q);
 	Model_CPP_executeCond(modelCPP, &root, a);
@@ -249,11 +247,15 @@ void *threadFunc(void *arg) {
 	for (loop_j = 0; loop_j < nrComb; loop_j++) {
 		ALikelihood = ALikelihood + a[loop_j];
 	}
-	ALogLikelihood =log(ALikelihood);
+	ALogLikelihood = log(ALikelihood);
+	if (ALogLikelihood != ALogLikelihood) {
+		ALogLikelihood = -INFINITY;
+	}
+
 	delete_Model_CPP(modelCPP);
 
 	/*alpha = 1.1;
-	beta = 0.3;*/
+	 beta = 0.3;*/
 
 	APrior = (alpha - 1) * log(*AS) + (-beta * *AS) + (alpha - 1) * log(*AD)
 			+ (-beta * *AD) + (alpha - 1) * log(*AW1) + (-beta * *AW1)
@@ -328,8 +330,11 @@ void *threadFunc(void *arg) {
 		delete_Model_CPP(modelCPP);
 
 		BLogLikelihood = log(BLikelihood);
+		if (BLogLikelihood != BLogLikelihood) {
+			BLogLikelihood = -INFINITY;
+		}
 		/*alpha = 1.1;
-		beta = 0.3;*/
+		 beta = 0.3;*/
 
 		if (*BS >= *BD) {
 			BPrior = -INFINITY;
@@ -366,7 +371,7 @@ void *threadFunc(void *arg) {
 		//double post = ALogLikelihood + APrior;
 		//fprintf (fp,"%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t", iteration,post,ALogLikelihood, APrior, *AS, *AD, *AW1,*AW2);
 		//for (loop_j = 0; loop_j < nrComb; loop_j++) {
-			//fprintf (fp,"%d\t",AVectorComb[loop_j]);
+		//fprintf (fp,"%d\t",AVectorComb[loop_j]);
 		//}
 		//fprintf (fp,"\n");
 		//fflush(fp);	

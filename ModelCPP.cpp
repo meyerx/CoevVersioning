@@ -24,6 +24,8 @@ void Model_CPP::computeBranchConditionalVector(const double t, const double *g, 
 	dt = D.array() * t;
 	dt2 = dt.exp().matrix();
 	h = (V * dt2.asDiagonal() * invV) * vecG;
+	/*cout << " H : " << (V * dt2.asDiagonal() * invV);
+	cout << endl;*/
 }
 
 void Model_CPP::condLikeFunction(double *condLike, const double *gi, const double *gj, const double ti, const double tj) const {
@@ -72,11 +74,13 @@ void Model_CPP::setQ(double **Qm) {
     	}
     }
 
-
 	EigenSolver<MatrixXd > es(Q, true);
 	D = es.eigenvalues().real().eval();
 	V = es.eigenvectors().real().eval();
 	invV = V.inverse().eval();
-	//cout << "Q : " << endl << Q; cout << endl;
-	//cout << "D : " << endl << D; cout << endl;
+	/*cout << "Q : " << endl << Q; cout << endl;
+	cout << "D : " << endl << D; cout << endl;
+	cout << "V : " << endl << V; cout << endl;
+	cout << "invV : " << endl << invV; cout << endl;*/
 }
+
