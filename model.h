@@ -18,7 +18,7 @@ void   setQ             (double **Qmatrix, double s, double d, double w1,
 			 double w2, int *VectCoevComb );
 void   setQNull         (double **Qmatrix, double w1, double w2);
 
-void setQSimulator(double **Qmatrix, double s, double d, double r1, double r2,int *VectCoevComb,double *freqVector);
+void setQSimulator(double **Qmatrix, double s, double d, double r1, double r2,int *VectCoevComb);
 
 void   pVectorFunction (double *pVector, double **Qmatrix, double **QTmatrix, double ti, double *MatrixA, double *MatrixB, double *MatrixC);
 

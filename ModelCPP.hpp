@@ -29,7 +29,7 @@ public:
 
 	double executeCond(struct node* n, double *vec);
 	void setQ(double **Qm);
-
+            void matInverse(double **Qm,double **QmInverse);
 private:
 	unsigned int nrComb;
 
@@ -51,6 +51,8 @@ double Model_CPP_executeCond(model_cpp* model, struct node* n, double *vec) {
 void Model_CPP_setQ(model_cpp* model, double **Qm) {
 	real(model)->setQ(Qm);
 }
-
+void Model_CPP_matInverse(model_cpp* model,double **Qm,double **QmInverse){
+            real(model)->matInverse(Qm,QmInverse);
+}
 
 #endif /* MODELCPP_H_ */

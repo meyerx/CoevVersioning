@@ -84,3 +84,39 @@ void Model_CPP::setQ(double **Qm) {
 	cout << "invV : " << endl << invV; cout << endl;*/
 }
 
+void Model_CPP::matInverse(double **Qm,double **QmInverse) {
+            MatrixXd QmNew(nrComb, nrComb);
+            MatrixXd QmInverseNew(nrComb, nrComb);
+            uint myI, myJ=0;
+            for (myI = 0; myI < nrComb; myI++){
+    	            for (myJ = 0; myJ < nrComb+1; myJ++){
+    		QmNew(myI, myJ) = Qm[myI][myJ];
+    	            }
+            }
+	QmInverseNew = QmNew.inverse();
+	for (myI = 0; myI < nrComb; myI++){
+    	            for (myJ = 0; myJ < nrComb; myJ++){
+    		QmInverse[myI][myJ] = QmInverseNew(myI, myJ) ;
+    	            }
+            }
+	
+   /*MatrixXf A(3,3);
+   A << 1, 2, 1,
+        2, 1, 0,
+        -1, 1, 2;
+   MatrixXf AInv(3,3)=A.inverse() ;
+   cout << "Here is the matrix A:\n" << A << endl;
+   cout << "The determinant of A is " << A.determinant() << endl;
+   cout << "The inverse of A is:\n" << A.inverse() << endl;
+   
+   
+   for (myI = 0; myI < 3; myI++){
+    for (myJ = 0; myJ < 3; myJ++){
+    cout << " " <<AInv(myI,myJ);
+   }
+   cout << endl;
+   }
+   */
+   
+}
+
