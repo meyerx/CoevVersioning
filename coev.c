@@ -617,7 +617,7 @@ int main (int argc, char **argv)
             int index =0;
             while(index <nrComb)
             {   
-                obsCombs[index] = 1;
+                obsCombs[index] = 0;
                 index++;
             }
             int randObs=rand() % 16;//int randObs=rand() % nrComb; //BECAUSE WE CAN HAVE SEGMENTATION ERROR IF TOO LARGE
