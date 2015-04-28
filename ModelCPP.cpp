@@ -8,6 +8,7 @@
 #include "ModelCPP.hpp"
 
 Model_CPP::Model_CPP(const uint aNRComb) {
+	notInvertible =  false;
 	nrComb = aNRComb;
 }
 
@@ -41,6 +42,14 @@ void Model_CPP::condLikeFunction(double *condLike, const double *gi, const doubl
 
 
 double Model_CPP::executeCond(struct node* n, double *vec) {
+
+    if(notInvertible) {
+	    uint assign;
+    	for(assign=0;assign<nrComb;assign++){
+        vec[assign]= -std::numeric_limits<double>::infinity();
+    	}
+  	  return -std::numeric_limits<double>::infinity();
+    }
     if (n != NULL) {
         if((n->left == NULL) && (n->right == NULL))// is leaf
         {
@@ -77,7 +86,17 @@ void Model_CPP::setQ(double **Qm) {
 	EigenSolver<MatrixXd > es(Q, true);
 	D = es.eigenvalues().real().eval();
 	V = es.eigenvectors().real().eval();
-	invV = V.inverse().eval();
+	//invV = V.inverse().eval();
+
+	Eigen::FullPivLU<MatrixXd> lu(V);
+	if(!lu.isInvertible()){
+		notInvertible = true;
+		//cout << "not inversible" << endl;
+	} else {
+		notInvertible = false;
+		invV = lu.inverse();
+	}
+
 	/*cout << "Q : " << endl << Q; cout << endl;
 	cout << "D : " << endl << D; cout << endl;
 	cout << "V : " << endl << V; cout << endl;

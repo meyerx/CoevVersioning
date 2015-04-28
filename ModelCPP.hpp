@@ -10,10 +10,11 @@
 
 #include "tree.h"
 
+#include <limits>
 #include <iostream>
-#include <Core>
-#include <Dense>
-#include <Eigenvalues>
+#include "Eigen/Core"
+#include "Eigen/Dense"
+#include "Eigen/Eigenvalues"
 
 #include "wrapperCPP.h"
 
@@ -29,8 +30,9 @@ public:
 
 	double executeCond(struct node* n, double *vec);
 	void setQ(double **Qm);
-            void matInverse(double **Qm,double **QmInverse);
+  void matInverse(double **Qm,double **QmInverse);
 private:
+	bool notInvertible;
 	unsigned int nrComb;
 
 	VectorXd D;
