@@ -441,7 +441,7 @@ int simulate ()
     volatile long unsigned counter;
     status = 0;
     
-    int AComb= 0;//rand() %nrProfiles;
+    int AComb= rand() %nrProfiles;
     
     int     loop_j=0, i;
     double *a, **Qtransposed, **Q;
