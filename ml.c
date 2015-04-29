@@ -64,6 +64,8 @@ double logLikelihood(int *VectCoevComb, double* AS, double* AD, double* AW1,
 	if (ALogLikelihood != ALogLikelihood) {
 		ALogLikelihood = -INFINITY;
 	}
+  	//printf("S=%f D=%f W1=%f W2=%f\n", *AS, *AD, *AW1, *AW2);
+  	//printf("Log likelihood : %f\n", ALogLikelihood);
 	return ALogLikelihood;
 }
 
@@ -124,6 +126,10 @@ double logLikelihoodNull(double* AW1, double* AW2) {
 	if (ALogLikelihood != ALogLikelihood) {
 		ALogLikelihood = -INFINITY;
 	}
+
+  //printf("W1=%f W2=%f\n",  *AW1, *AW2);
+  //printf("Log likelihood : %f\n", ALogLikelihood);
+
 	return ALogLikelihood;
 }
 
@@ -201,6 +207,8 @@ int ml() {
 			double ub_null[2] = { 100, 100 }; // upper bounds
 			nlopt_opt opt_null;
 
+      //printf("NULL METHOD :\n");
+
 			//opt_null = nlopt_create(NLOPT_LD_LBFGS, 2); // algorithm and dimensionality
 			//opt_null = nlopt_create(NLOPT_LN_COBYLA, 2);
 			//opt_null = nlopt_create(NLOPT_LN_BOBYQA, 2);
@@ -228,6 +236,8 @@ int ml() {
 			double ub[4] = { 100, 100, 100, 100 }; // upper bounds
 			nlopt_opt opt;
 
+      //printf("COEV METHOD :\n");
+
 			//opt = nlopt_create(NLOPT_LD_LBFGS, 4); // algorithm and dimensionality
 			//opt = nlopt_create(NLOPT_LN_COBYLA, 4);
 			//opt = nlopt_create(NLOPT_LN_BOBYQA, 4);
@@ -239,6 +249,7 @@ int ml() {
 			nlopt_set_xtol_rel(opt, 1e-10);
 			nlopt_set_maxtime(opt, 10.0);
 			double x[4] = { s, d, r1, r2 }; // some initial guess
+      //double x[4] = { 1., 100., 0.1, 0.1 }; // some initial guess
 			double maxf; // the maximum objective value, upon return
 
 			if (nlopt_optimize(opt, x, &maxf) < 0) {

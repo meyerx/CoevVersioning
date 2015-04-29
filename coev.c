@@ -248,7 +248,7 @@ int getArguments (int argc, char **argv)
   print_freq = 0;   // print frequency (parms are printed on screen)
   burnin = 0;          // burnin to exclude (keep it 0 for now)
   s = 1;           
-  d = 100;             
+  d = 10;             
   r1 = 0.1;  r2 = 0.1;
   strcpy (treeFile, "treeInput.txt");
   strcpy (alignFile, "alignment.txt");

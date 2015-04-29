@@ -106,6 +106,7 @@ int readAlignmentFile(){ char             line[MAX_LINE_LEN];
             seq->label = strdup (&(line[1]));
             seq->sequence = NULL;
             seq->next = NULL;
+            //printf("%s\n", seq->label);
         }
         /*
          ** Otherwise, save the actual sequence.
@@ -143,6 +144,8 @@ int getData (char *label, char *data){
     seq = &(seqList);
     while (strcmp (seq->label, label) != 0)
     {
+        //printf("Label : %s|\n", label);
+        //printf("SeqLab : %s|\n", seq->label);
         
         if (seq->next == NULL)
         {
@@ -403,6 +406,7 @@ int createTree1(char* treeParenth, int num_chars){
             distance[indexdistance]='\0';
             son = (struct node*)malloc(sizeof(struct node));
             strcpy (son->label, name);
+            //printf("%s\n", name);
             if (getData (name, son->data) == -1)
             {
                 status = -1;
